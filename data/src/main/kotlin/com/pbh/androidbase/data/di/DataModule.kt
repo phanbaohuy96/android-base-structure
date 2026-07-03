@@ -2,6 +2,8 @@ package com.pbh.androidbase.data.di
 
 import android.content.Context
 import androidx.room.Room
+import com.pbh.androidbase.core.common.DefaultDispatcherProvider
+import com.pbh.androidbase.core.common.DispatcherProvider
 import com.pbh.androidbase.core.network.AuthHeaderInterceptor
 import com.pbh.androidbase.core.network.RetrofitFactory
 import com.pbh.androidbase.data.BuildConfig
@@ -42,6 +44,10 @@ abstract class RepositoryModule {
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModule {
+    @Provides
+    @Singleton
+    fun provideDispatcherProvider(): DispatcherProvider = DefaultDispatcherProvider()
+
     @Provides
     @Singleton
     fun provideJson(): Json =

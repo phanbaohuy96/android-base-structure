@@ -13,25 +13,29 @@ import com.pbh.androidbase.core.designsystem.AppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppScaffold(
-    title: String,
     modifier: Modifier = Modifier,
+    title: String? = null,
     actions: @Composable () -> Unit = {},
+    snackbarHost: @Composable () -> Unit = {},
     content: @Composable (PaddingValues) -> Unit,
 ) {
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopAppBar(
-                title = { Text(title) },
-                actions = { actions() },
-                colors =
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = AppTheme.colors.surface,
-                        titleContentColor = AppTheme.colors.onSurface,
-                        actionIconContentColor = AppTheme.colors.primary,
-                    ),
-            )
+            if (title != null) {
+                TopAppBar(
+                    title = { Text(title) },
+                    actions = { actions() },
+                    colors =
+                        TopAppBarDefaults.topAppBarColors(
+                            containerColor = AppTheme.colors.surface,
+                            titleContentColor = AppTheme.colors.onSurface,
+                            actionIconContentColor = AppTheme.colors.primary,
+                        ),
+                )
+            }
         },
+        snackbarHost = snackbarHost,
         content = content,
     )
 }

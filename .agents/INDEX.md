@@ -1,6 +1,6 @@
 # Agent Index
 
-- New module or package: `skills/and-module-scaffold/SKILL.md`
+- New app feature package or module-graph change: `skills/and-module-scaffold/SKILL.md`
 - ViewModel or screen state: `skills/and-viewmodel-pattern/SKILL.md`
 - Navigation: `skills/and-navigation/SKILL.md`
 - Theme/components: `skills/and-theme-usage/SKILL.md`

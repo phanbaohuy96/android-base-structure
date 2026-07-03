@@ -13,11 +13,15 @@ for path in scan("domain/src/**/*.kt"):
     if "import android." in text or "import androidx." in text:
         FAILURES.append(f"{path}: domain must not import Android APIs")
 
-for module in ("feature-auth", "feature-home"):
-    for path in scan(f"{module}/src/**/*.kt"):
-        text = path.read_text()
-        if "com.pbh.androidbase.data" in text:
-            FAILURES.append(f"{path}: feature modules must not import :data")
+# Features now live inside :app (package com.pbh.androidbase.feature.*), so the old module-level
+# "feature must not depend on :data" edge no longer exists. Enforce it as a package rule instead:
+# feature packages must reach data only through :domain use cases, never import :data directly.
+for path in scan("app/src/**/*.kt"):
+    if "/com/pbh/androidbase/feature/" not in path.as_posix():
+        continue
+    text = path.read_text()
+    if "import com.pbh.androidbase.data." in text:
+        FAILURES.append(f"{path}: feature packages must not import :data (go through :domain use cases)")
 
 for path in scan("**/src/**/*.kt"):
     text = path.read_text()

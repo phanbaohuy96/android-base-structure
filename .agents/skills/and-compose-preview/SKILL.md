@@ -28,9 +28,8 @@ Preview stateless content whenever possible. Keep Hilt-backed route/screen entry
 
 ## Verification
 
-- `rtk ./gradlew :feature-auth:compileDebugKotlin`
-- `rtk ./gradlew :feature-home:compileDebugKotlin`
-- `rtk ./gradlew spotlessCheck`
+- `./gradlew :app:compileDevDebugKotlin`
+- `./gradlew spotlessCheck`
 
 ## Related
 

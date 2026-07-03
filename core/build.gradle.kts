@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.datastore.preferences)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
     implementation(libs.retrofit)

@@ -1,0 +1,9 @@
+<resources>
+    <!-- Central DomainError -> text policy (see DomainErrorText.kt). -->
+    <string name="core_error_unauthorized">Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.</string>
+    <string name="core_error_offline">Thiết bị có vẻ đang ngoại tuyến.</string>
+    <string name="core_error_not_found">Không tìm thấy mục được yêu cầu.</string>
+    <string name="core_error_invalid_email">Nhập địa chỉ email hợp lệ.</string>
+    <string name="core_error_password_too_short">Mật khẩu phải có ít nhất 6 ký tự.</string>
+    <string name="core_error_generic">Đã xảy ra lỗi. Vui lòng thử lại.</string>
+</resources>

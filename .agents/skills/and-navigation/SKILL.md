@@ -9,7 +9,7 @@ Use for new destinations, nested graphs, navigation arguments, auth guards, deep
 
 ## Kotlin patterns/refs
 
-Routes are `@Serializable` objects or data classes. Feature modules expose `fun NavGraphBuilder.featureGraph(...)` and keep graph-local navigation callbacks explicit. The root `NavHost` and cross-feature aggregation live in `:app`.
+Routes are `@Serializable` objects or data classes. Feature packages expose `fun NavGraphBuilder.featureGraph(...)` from inside `:app` and keep graph-local navigation callbacks explicit. The root `NavHost` and cross-feature aggregation live in `:app`.
 
 Prefer `toRoute<T>()`/typed navigation APIs over raw route strings for new work.
 
@@ -26,14 +26,14 @@ Prefer `toRoute<T>()`/typed navigation APIs over raw route strings for new work.
 
 - Passing full domain objects through navigation args.
 - Reading route arguments manually when typed APIs are available.
-- Making feature modules know about unrelated feature routes.
+- Making feature packages know about unrelated feature routes.
 - Triggering navigation directly from repository callbacks.
 
 ## Verification
 
-- `rtk ./gradlew :feature-auth:compileDebugKotlin :feature-home:compileDebugKotlin`
-- `rtk ./gradlew :app:assembleDevDebug`
-- `rtk ./gradlew :feature-auth:testDebugUnitTest :feature-home:testDebugUnitTest`
+- `./gradlew :app:compileDevDebugKotlin`
+- `./gradlew :app:assembleDevDebug`
+- `./gradlew :app:testDevDebugUnitTest`
 
 ## Related
 

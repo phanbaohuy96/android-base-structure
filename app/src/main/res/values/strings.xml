@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Android Base</string>
+
+    <!-- Auth / login -->
+    <string name="login_title">Android Base</string>
+    <string name="login_subtitle">Reference login slice</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_password_label">Password</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_default_email">demo@example.com</string>
+    <string name="login_default_password">password</string>
+
+    <!-- Home / item detail -->
+    <string name="home_title">Home</string>
+    <string name="home_action_refresh">Refresh</string>
+    <string name="home_action_logout">Logout</string>
+    <string name="item_detail_title">Detail</string>
 </resources>

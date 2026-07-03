@@ -25,15 +25,15 @@ KSP must match the Kotlin version from `gradle/libs.versions.toml`. Hilt binding
 ## Common mistakes
 
 - Adding `kapt` to a KSP project.
-- Creating a binding in a feature module for an app-wide implementation.
+- Creating a binding in a feature package for an app-wide implementation.
 - Fixing generated Java instead of Kotlin source.
 - Changing Kotlin without updating KSP.
 
 ## Verification
 
-- `rtk ./gradlew :app:kspDevDebugKotlin`
-- `rtk ./gradlew :data:kspDevDebugKotlin`
-- `rtk ./gradlew :app:assembleDevDebug`
+- `./gradlew :app:kspDevDebugKotlin`
+- `./gradlew :data:kspDevDebugKotlin`
+- `./gradlew :app:assembleDevDebug`
 
 ## Related
 

@@ -24,16 +24,16 @@ App-wide infrastructure belongs in `SingletonComponent`. Android entrypoints (`A
 
 ## Common mistakes
 
-- Putting app-wide bindings in feature modules.
+- Putting app-wide bindings in feature packages.
 - Adding a dependency cycle to fix a missing binding.
 - Using `@Provides` where constructor injection or `@Binds` is simpler.
 - Field-injecting plain Kotlin classes.
 
 ## Verification
 
-- `rtk ./gradlew :app:kspDevDebugKotlin`
-- `rtk ./gradlew :app:assembleDevDebug`
-- `rtk .agents/skills/and-dependency-injection/scripts/check_layer_boundaries.py`
+- `./gradlew :app:kspDevDebugKotlin`
+- `./gradlew :app:assembleDevDebug`
+- `.agents/skills/and-dependency-injection/scripts/check_layer_boundaries.py`
 
 ## Related
 

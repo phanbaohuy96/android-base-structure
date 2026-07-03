@@ -9,7 +9,9 @@ Use for Compose screens, ViewModels, UiState, UiEvent/Intent, one-off effects, l
 
 ## Kotlin patterns/refs
 
-Expose immutable `StateFlow<UiState>` with a private `MutableStateFlow`. Model renderable screen state as a sealed interface or data class. Model transient work such as snackbars and navigation as sealed `Effect` values sent through a `Channel` and exposed with `receiveAsFlow()`.
+Feature ViewModels extend `BaseViewModel<S, E>` from `:core`. Model renderable screen state as a sealed interface or data class and pass the initial state to `BaseViewModel`. Mutate state only with `setState { ... }`; emit one-off effects only with `sendEffect(...)`.
+
+Model transient work such as snackbars and navigation as sealed `UiEffect` values. Message/snackbar cases implement `MessageEffect` and carry `UiText`; `BaseScreen` shows them automatically. Screens should render through `BaseScreen` and handle only feature-specific effects such as navigation in `onEffect`.
 
 ViewModels call use cases, not repositories. Composables render state and send events/callbacks; they do not validate business rules or map transport errors.
 
@@ -17,9 +19,10 @@ ViewModels call use cases, not repositories. Composables render state and send e
 
 - Initial state is explicit and renderable.
 - State contains data needed to draw the screen, not one-off commands.
-- Effects are one-off and collected with lifecycle-aware helpers.
-- Validation happens in use cases; ViewModels map errors to `UiText`.
-- Public state/effect flows are immutable.
+- Effects are one-off sealed `UiEffect` values.
+- Validation happens in use cases; ViewModels map domain errors with `DomainError.toUiText()` unless a feature-specific override is deliberate.
+- Public state/effect flows come from `BaseViewModel`.
+- Screens use `BaseScreen` unless they need a clearly different scaffold.
 - Long-running work guards duplicate submits or exposes refreshing/loading state.
 - Tests cover success, failure, and effect emission.
 
@@ -29,13 +32,14 @@ ViewModels call use cases, not repositories. Composables render state and send e
 - Storing navigation as persistent UiState.
 - Calling data repositories directly from feature ViewModels.
 - Emitting raw `String` messages from ViewModels.
+- Hand-rolling `Channel`/`MutableStateFlow` plumbing instead of using `BaseViewModel`.
 - Leaving loading state stuck after failure.
 
 ## Verification
 
-- `rtk ./gradlew :feature-auth:testDebugUnitTest :feature-home:testDebugUnitTest`
-- `rtk ./gradlew :domain:test`
-- `rtk rg -n "MutableStateFlow|Channel|UiText|Repository" feature-auth/src/main feature-home/src/main --glob '*.kt'`
+- `./gradlew :app:testDevDebugUnitTest`
+- `./gradlew :domain:test`
+- `rg -n "MutableStateFlow|Channel|Repository" app/src/main/kotlin/com/pbh/androidbase/feature --glob '*.kt'`
 
 ## Related
 

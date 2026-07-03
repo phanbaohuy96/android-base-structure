@@ -26,13 +26,13 @@ while IFS= read -r -d '' file; do
   esac
 done
 
-find app core data domain feature-auth feature-home -type d -path "*/$OLD_PATH" -print0 |
+find app core data domain -type d -path "*/$OLD_PATH" -print0 |
 while IFS= read -r -d '' dir; do
   target="${dir%$OLD_PATH}$NEW_PATH"
   mkdir -p "$target"
   find "$dir" -mindepth 1 -maxdepth 1 -exec mv {} "$target"/ \;
 done
 
-find app core data domain feature-auth feature-home -type d -empty -delete
+find app core data domain -type d -empty -delete
 
 echo "Initialized $NEW_NAME at package $NEW_PACKAGE"

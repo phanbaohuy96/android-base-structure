@@ -30,9 +30,9 @@ Review the screen contract first: loading, content, empty, error, refresh, navig
 
 ## Verification
 
-- `rtk ./gradlew :feature-auth:compileDebugKotlin :feature-home:compileDebugKotlin`
-- `rtk rg -n '\"[^"]*[A-Za-z][^"]*\"' feature-auth/src/main feature-home/src/main --glob '*.kt'`
-- `rtk ./gradlew spotlessCheck`
+- `./gradlew :app:compileDevDebugKotlin`
+- `rg -n '\"[^"]*[A-Za-z][^"]*\"' app/src/main/kotlin/com/pbh/androidbase/feature --glob '*.kt'`
+- `./gradlew spotlessCheck`
 
 ## Related
 

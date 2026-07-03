@@ -18,11 +18,9 @@ Mock login is enabled for the `dev` flavor. Use `demo@example.com` and `password
 :core
 :data
 :domain
-:feature-auth
-:feature-home
 ```
 
-Feature modules depend only on `:core` and `:domain`. Data implementations stay in `:data`. The app module composes everything.
+Feature code lives inside `:app` under `com.pbh.androidbase.feature.{auth,home}`. Feature packages use `:domain` use cases and shared `:core` UI, but must not import `com.pbh.androidbase.data.*`. Data implementations stay in `:data`. The app module composes everything.
 
 ## Flavors
 
@@ -70,7 +68,11 @@ src/main/res/values/strings.xml
 src/main/res/values-vi/strings.xml
 ```
 
-ViewModels expose messages as `UiText.Resource`; Composables resolve them with `stringResource` or `UiText.asString`. Domain errors remain typed and are translated at the feature/UI edge.
+ViewModels expose messages as `UiText.Resource`; Composables resolve them with `stringResource` or `UiText.asString`. Domain errors remain typed and are translated through `DomainError.toUiText()` at the UI edge.
+
+## Base UI Tier
+
+Feature ViewModels extend `BaseViewModel<S, E>` from `:core` and expose sealed UI state plus sealed `UiEffect` values. Screens render through `BaseScreen`, which collects lifecycle-aware state, observes effects, and shows `MessageEffect` snackbars automatically.
 
 ## Test Coverage
 

@@ -32,10 +32,10 @@ Prefer JVM tests for logic. Use Compose UI tests for screen contracts that requi
 
 ## Verification
 
-- `rtk ./gradlew :domain:test`
-- `rtk ./gradlew :core:testDebugUnitTest`
-- `rtk ./gradlew :feature-auth:testDebugUnitTest :feature-home:testDebugUnitTest`
-- `rtk ./gradlew koverVerify`
+- `./gradlew :domain:test`
+- `./gradlew :core:testDebugUnitTest`
+- `./gradlew :app:testDevDebugUnitTest`
+- `./gradlew koverVerify`
 
 ## Related
 

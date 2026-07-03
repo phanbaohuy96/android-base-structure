@@ -1,6 +1,6 @@
 import com.diffplug.gradle.spotless.SpotlessExtension
-import dev.detekt.gradle.Detekt
-import dev.detekt.gradle.extensions.DetektExtension
+import io.gitlab.arturbosch.detekt.Detekt
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import kotlinx.kover.gradle.plugin.dsl.AggregationType
 import kotlinx.kover.gradle.plugin.dsl.CoverageUnit
 import kotlinx.kover.gradle.plugin.dsl.KoverProjectExtension
@@ -23,7 +23,7 @@ val kotlinVersion = libs.versions.kotlin.get()
 
 subprojects {
     apply(plugin = "com.diffplug.spotless")
-    apply(plugin = "dev.detekt")
+    apply(plugin = "io.gitlab.arturbosch.detekt")
     apply(plugin = "org.jetbrains.kotlinx.kover")
 
     extensions.configure<DetektExtension>("detekt") {
@@ -64,10 +64,9 @@ subprojects {
 }
 
 dependencies {
+    kover(project(":app"))
     kover(project(":core"))
     kover(project(":domain"))
-    kover(project(":feature-auth"))
-    kover(project(":feature-home"))
 }
 
 extensions.configure<KoverProjectExtension>("kover") {

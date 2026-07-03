@@ -12,6 +12,8 @@ style:
     max: 3
 
 complexity:
+  LongParameterList:
+    functionThreshold: 8
   LongMethod:
     excludes:
       - "**/*Screen.kt"

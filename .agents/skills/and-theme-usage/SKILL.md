@@ -9,7 +9,7 @@ Use for screen styling, reusable components, theme changes, typography/shape/col
 
 ## Kotlin patterns/refs
 
-Use `AndroidBaseTheme` and tokens from `:core:designsystem`. Feature modules should compose screens from shared Material 3 tokens and reusable components such as `AppScaffold`, `AppButton`, and `AppTextField`. Theme configuration belongs in core/app, not feature-local forks.
+Use `AndroidBaseTheme` and tokens from `:core:designsystem`. Feature packages should compose screens from shared Material 3 tokens and reusable components such as `AppScaffold`, `AppButton`, and `AppTextField`. Theme configuration belongs in core/app, not feature-local forks.
 
 ## Checklist
 
@@ -30,9 +30,9 @@ Use `AndroidBaseTheme` and tokens from `:core:designsystem`. Feature modules sho
 
 ## Verification
 
-- `rtk ./gradlew :core:compileDebugKotlin`
-- `rtk ./gradlew :feature-auth:compileDebugKotlin :feature-home:compileDebugKotlin`
-- `rtk ./gradlew spotlessCheck`
+- `./gradlew :core:compileDebugKotlin`
+- `./gradlew :app:compileDevDebugKotlin`
+- `./gradlew spotlessCheck`
 
 ## Related
 

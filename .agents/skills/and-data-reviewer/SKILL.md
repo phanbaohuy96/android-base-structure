@@ -13,7 +13,7 @@ Trace the path: UI -> ViewModel -> UseCase -> Repository port -> data implementa
 
 ## Checklist
 
-- Feature modules do not import `:data` types.
+- Feature packages do not import `com.pbh.androidbase.data.*` types.
 - Domain stays pure Kotlin/JVM with no Android imports.
 - DTOs, Room entities, and DataStore keys do not leak outside `:data`/`:core` infrastructure.
 - Repositories return `AppResult`/domain models, not Retrofit/Room primitives.
@@ -25,14 +25,14 @@ Trace the path: UI -> ViewModel -> UseCase -> Repository port -> data implementa
 
 - Accepting a repository that catches everything as `Unknown`.
 - Letting a DAO entity become the domain model because fields match.
-- Putting repository implementation bindings in feature modules.
+- Putting repository implementation bindings in feature packages.
 - Reviewing only compile success and not the dependency graph.
 
 ## Verification
 
-- `rtk .agents/skills/and-dependency-injection/scripts/check_layer_boundaries.py`
-- `rtk ./gradlew :data:compileDevDebugKotlin :domain:test`
-- `rtk rg -n "com\\.pbh\\.androidbase\\.data" feature-auth/src feature-home/src`
+- `.agents/skills/and-dependency-injection/scripts/check_layer_boundaries.py`
+- `./gradlew :data:compileDevDebugKotlin :domain:test`
+- `rg -n "com\\.pbh\\.androidbase\\.data" app/src/main/kotlin/com/pbh/androidbase/feature`
 
 ## Related
 

@@ -24,16 +24,16 @@ ViewModels translate `DomainError` into `UiText.Resource` and emit one-off messa
 
 ## Common mistakes
 
-- Throwing Retrofit exceptions into feature modules.
+- Throwing Retrofit exceptions into feature packages.
 - Returning a freeform server message directly to UI.
 - Encoding navigation as an error state.
 - Swallowing failures and leaving loading spinners active.
 
 ## Verification
 
-- `rtk ./gradlew :domain:test`
-- `rtk ./gradlew :core:testDebugUnitTest`
-- `rtk ./gradlew :feature-auth:testDebugUnitTest :feature-home:testDebugUnitTest`
+- `./gradlew :domain:test`
+- `./gradlew :core:testDebugUnitTest`
+- `./gradlew :app:testDevDebugUnitTest`
 
 ## Related
 

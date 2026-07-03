@@ -10,12 +10,18 @@ import com.pbh.androidbase.feature.home.navigation.HomeListRoute
 import com.pbh.androidbase.feature.home.navigation.homeGraph
 
 @Composable
-fun AppNavHost() {
+fun AppNavHost(startRoute: StartRoute) {
     val navController = rememberNavController()
+
+    val startDestination: Any =
+        when (startRoute) {
+            StartRoute.Login -> LoginRoute
+            StartRoute.Home -> HomeListRoute
+        }
 
     NavHost(
         navController = navController,
-        startDestination = LoginRoute,
+        startDestination = startDestination,
     ) {
         authGraph(
             onLoginComplete = {

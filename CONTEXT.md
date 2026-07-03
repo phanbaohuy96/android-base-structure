@@ -1,10 +1,22 @@
 # Context Glossary
 
-## Feature module
+## Feature package
 
-An Android library module containing screens, ViewModels, feature routes, and feature-local UI state.
+A package under `app/src/main/kotlin/com/pbh/androidbase/feature/**` containing screens, ViewModels, feature routes, and feature-local UI state/effects.
 
-_Avoid_: package, page folder, scene.
+_Avoid_: feature module, page folder, scene.
+
+## BaseViewModel
+
+The shared `:core` ViewModel base that owns immutable `state: StateFlow<S>`, one-off `effects: Flow<E>`, and safe coroutine launching.
+
+_Avoid_: ViewModelBase, bloc base, state holder helper.
+
+## BaseScreen
+
+The shared Compose screen wrapper that collects a `BaseViewModel`, hosts `AppScaffold`, and auto-shows `MessageEffect` snackbars.
+
+_Avoid_: screen base class, route wrapper, scaffold helper.
 
 ## UseCase
 
@@ -23,6 +35,24 @@ _Avoid_: view data, screen model, status bag.
 A one-off UI event emitted from a ViewModel through a `Channel`/`Flow`.
 
 _Avoid_: event bus, callback, action stream.
+
+## UiEffect
+
+The marker interface for feature-specific sealed effect hierarchies emitted by `BaseViewModel`.
+
+_Avoid_: raw event, command object.
+
+## MessageEffect
+
+A `UiEffect` carrying a `UiText` message that `BaseScreen` shows in the snackbar automatically.
+
+_Avoid_: snackbar string, toast command.
+
+## ShowMessage
+
+A feature-local effect case implementing `MessageEffect`; keep it inside the feature's sealed effect type.
+
+_Avoid_: shared global snackbar event, raw string message.
 
 ## Repository
 

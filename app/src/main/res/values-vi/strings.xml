@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Android Base</string>
+
+    <!-- Auth / login -->
+    <string name="login_title">Android Base</string>
+    <string name="login_subtitle">Luồng đăng nhập mẫu</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_password_label">Mật khẩu</string>
+    <string name="login_sign_in">Đăng nhập</string>
+    <string name="login_default_email">demo@example.com</string>
+    <string name="login_default_password">password</string>
+
+    <!-- Home / item detail -->
+    <string name="home_title">Trang chủ</string>
+    <string name="home_action_refresh">Làm mới</string>
+    <string name="home_action_logout">Đăng xuất</string>
+    <string name="item_detail_title">Chi tiết</string>
 </resources>

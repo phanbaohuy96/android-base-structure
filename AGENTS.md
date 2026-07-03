@@ -11,9 +11,7 @@ Base package: `com.pbh.androidbase`.
 Allowed dependencies:
 
 ```text
-:app -> :feature-auth, :feature-home, :data, :core, :domain
-:feature-auth -> :core, :domain
-:feature-home -> :core, :domain
+:app -> :core, :data, :domain
 :data -> :core, :domain
 :core -> :domain
 :domain -> Kotlin/JVM only
@@ -21,16 +19,21 @@ Allowed dependencies:
 
 Layer rules:
 - `:domain` has no Android imports.
-- `:feature-*` modules never depend on or import `:data`.
+- Feature packages live under `app/src/main/kotlin/com/pbh/androidbase/feature/**`.
+- Feature packages never import `com.pbh.androidbase.data.*`.
 - `:data` implements repository ports from `:domain`.
-- `:app` is the composition root and owns app-level wiring.
+- `:app` is the composition root and owns feature navigation plus app-level wiring.
 
 ## Architecture
 
 Use MVVM + unidirectional data flow:
 - Screen sends events to a `ViewModel`.
-- `ViewModel` exposes `StateFlow<UiState>`.
-- One-off events use `Channel` exposed as `Flow`.
+- Feature `ViewModel`s extend `BaseViewModel<S, E>`.
+- `BaseViewModel` exposes immutable `state: StateFlow<S>` and `effects: Flow<E>`.
+- UI states stay explicit and exhaustive with sealed interfaces.
+- One-off events implement `UiEffect`; snackbar/message effects implement `MessageEffect`.
+- Screens render through `BaseScreen` unless a lower-level scaffold is genuinely needed.
+- Default domain-error copy comes from `DomainError.toUiText()` in `:core`.
 - `UseCase` classes orchestrate domain behavior.
 - Repository interfaces live in `:domain`; implementations live in `:data`.
 
@@ -45,9 +48,21 @@ Use MVVM + unidirectional data flow:
 7. Verify with the narrowest meaningful Gradle task first.
 8. Match local naming, package, and file conventions.
 9. Keep UI state explicit and exhaustive with sealed interfaces.
-10. Keep IO, mapping, and persistence outside feature modules.
+10. Keep IO, mapping, and persistence outside feature packages.
 11. Localize user-facing strings with `strings.xml` when moving beyond prototypes.
 12. Do not hide security-sensitive changes in broad refactors.
+
+## Code Generation
+
+Hilt, Room, KSP, and BuildConfig output must be regenerated through Gradle. Do not edit generated output under `build/`.
+
+When adding Hilt bindings, keep app-wide composition in `:app`, repository bindings in `:data`, and avoid feature-package bindings for shared implementations.
+
+## Localization
+
+User-facing text belongs in `res/values/strings.xml` and matching `values-vi/strings.xml` for the module that owns the UI or seed content. ViewModels should expose `UiText.Resource`, not raw strings.
+
+Domain errors remain typed in `:domain`; translate them through `DomainError.toUiText()` or a deliberate feature-specific override at the UI edge.
 
 ## Gradle Commands
 
@@ -56,10 +71,6 @@ Priority order:
 - `./gradlew testDevDebugUnitTest`
 - `./gradlew detekt spotlessCheck`
 - `./gradlew spotlessApply`
-
-## Code Generation
-
-Hilt, Room, KSP, and BuildConfig output must be regenerated through Gradle. Do not edit generated output under `build/`.
 
 ## Security
 

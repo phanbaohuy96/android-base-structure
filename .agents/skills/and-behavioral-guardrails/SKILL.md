@@ -31,9 +31,9 @@ Use `rg`/`rg --files` for discovery. Run shell commands through `rtk` in this re
 
 ## Verification
 
-- `rtk ./gradlew :app:assembleDevDebug`
-- `rtk ./gradlew detekt spotlessCheck`
-- `rtk .agents/skills/and-dependency-injection/scripts/check_layer_boundaries.py`
+- `./gradlew :app:assembleDevDebug`
+- `./gradlew detekt spotlessCheck`
+- `.agents/skills/and-dependency-injection/scripts/check_layer_boundaries.py`
 
 ## Related
 
