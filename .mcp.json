@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "./mcp_context7_server.sh"
+    }
+  }
+}

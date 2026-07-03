@@ -1,0 +1,9 @@
+{
+  "private": true,
+  "scripts": {
+    "mcp:context7": "context7-mcp"
+  },
+  "dependencies": {
+    "@upstash/context7-mcp": "3.2.2"
+  }
+}

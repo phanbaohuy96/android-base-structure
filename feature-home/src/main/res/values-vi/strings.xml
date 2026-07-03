@@ -1,0 +1,10 @@
+<resources>
+    <string name="home_title">Trang chủ</string>
+    <string name="home_action_refresh">Làm mới</string>
+    <string name="home_action_logout">Đăng xuất</string>
+    <string name="item_detail_title">Chi tiết</string>
+    <string name="home_error_item_not_found">Không tìm thấy mục.</string>
+    <string name="home_error_offline_cache">Đang hiển thị dữ liệu đã lưu. Mạng đang ngoại tuyến.</string>
+    <string name="home_error_session_expired">Phiên đăng nhập đã hết hạn.</string>
+    <string name="home_error_generic">Đã xảy ra lỗi. Vui lòng thử lại.</string>
+</resources>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="seed_item_architecture_title">Kiến trúc Android phân lớp</string>
+    <string name="seed_item_architecture_description">Một lát cắt mẫu thể hiện ranh giới UI, ViewModel, use case, repository, Retrofit và Room.</string>
+    <string name="seed_item_offline_cache_title">Bộ nhớ đệm ngoại tuyến Room</string>
+    <string name="seed_item_offline_cache_description">Dữ liệu trang chủ được phục vụ từ Room như nguồn dữ liệu duy nhất sau khi làm mới.</string>
+    <string name="seed_item_agent_ready_title">Quy ước sẵn sàng cho agent</string>
+    <string name="seed_item_agent_ready_description">Tài liệu, kỹ năng, hook và CI giúp template dễ dự đoán cho con người và coding agent.</string>
+</resources>

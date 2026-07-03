@@ -1,0 +1,8 @@
+<resources>
+    <string name="seed_item_architecture_title">Layered Android Architecture</string>
+    <string name="seed_item_architecture_description">A reference slice showing UI, ViewModel, use case, repository, Retrofit, and Room boundaries.</string>
+    <string name="seed_item_offline_cache_title">Room Offline Cache</string>
+    <string name="seed_item_offline_cache_description">Home data is served from Room as the single source of truth after refresh.</string>
+    <string name="seed_item_agent_ready_title">Agent-ready Conventions</string>
+    <string name="seed_item_agent_ready_description">Docs, skills, hooks, and CI make this template predictable for humans and coding agents.</string>
+</resources>

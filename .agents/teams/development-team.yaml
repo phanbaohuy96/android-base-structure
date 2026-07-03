@@ -1,0 +1,21 @@
+roles:
+  android_engineer:
+    owns:
+      - module boundaries
+      - Kotlin implementation
+      - Gradle verification
+  ui_reviewer:
+    owns:
+      - Compose ergonomics
+      - Material 3 consistency
+      - accessibility basics
+  data_reviewer:
+    owns:
+      - repository ports
+      - Retrofit/Room mapping
+      - offline cache behavior
+workflow:
+  default:
+    - android_engineer
+    - data_reviewer
+    - ui_reviewer

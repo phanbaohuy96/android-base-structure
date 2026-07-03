@@ -1,0 +1,15 @@
+<resources>
+    <string name="login_title">Android Base</string>
+    <string name="login_subtitle">Luồng đăng nhập mẫu</string>
+    <string name="login_email_label">Email</string>
+    <string name="login_password_label">Mật khẩu</string>
+    <string name="login_sign_in">Đăng nhập</string>
+    <string name="login_default_email">demo@example.com</string>
+    <string name="login_default_password">password</string>
+    <string name="login_error_account_not_found">Không tìm thấy tài khoản được yêu cầu.</string>
+    <string name="login_error_offline">Thiết bị có vẻ đang ngoại tuyến.</string>
+    <string name="login_error_invalid_credentials">Thông tin đăng nhập không hợp lệ.</string>
+    <string name="login_error_invalid_email">Nhập địa chỉ email hợp lệ.</string>
+    <string name="login_error_password_too_short">Mật khẩu phải có ít nhất 6 ký tự.</string>
+    <string name="login_error_generic">Đã xảy ra lỗi. Vui lòng thử lại.</string>
+</resources>

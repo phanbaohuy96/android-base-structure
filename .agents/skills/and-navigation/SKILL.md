@@ -1,0 +1,40 @@
+---
+name: and-navigation
+description: Add type-safe Navigation Compose routes and graphs.
+---
+
+## When to use
+
+Use for new destinations, nested graphs, navigation arguments, auth guards, deep links, or route refactors.
+
+## Kotlin patterns/refs
+
+Routes are `@Serializable` objects or data classes. Feature modules expose `fun NavGraphBuilder.featureGraph(...)` and keep graph-local navigation callbacks explicit. The root `NavHost` and cross-feature aggregation live in `:app`.
+
+Prefer `toRoute<T>()`/typed navigation APIs over raw route strings for new work.
+
+## Checklist
+
+- Apply Kotlin serialization plugin where typed routes live.
+- Keep route models small and serializable.
+- Use stable IDs in route args; load rich objects through use cases.
+- Keep root start-destination/auth-guard logic in `:app`.
+- Do not store one-off navigation as persistent UiState.
+- Test ViewModel effects that trigger navigation.
+
+## Common mistakes
+
+- Passing full domain objects through navigation args.
+- Reading route arguments manually when typed APIs are available.
+- Making feature modules know about unrelated feature routes.
+- Triggering navigation directly from repository callbacks.
+
+## Verification
+
+- `rtk ./gradlew :feature-auth:compileDebugKotlin :feature-home:compileDebugKotlin`
+- `rtk ./gradlew :app:assembleDevDebug`
+- `rtk ./gradlew :feature-auth:testDebugUnitTest :feature-home:testDebugUnitTest`
+
+## Related
+
+`and-viewmodel-pattern`, `and-testing`, `and-module-scaffold`.

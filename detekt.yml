@@ -1,0 +1,17 @@
+naming:
+  FunctionNaming:
+    ignoreAnnotated:
+      - Composable
+
+style:
+  MagicNumber:
+    active: false
+  MaxLineLength:
+    maxLineLength: 140
+  ReturnCount:
+    max: 3
+
+complexity:
+  LongMethod:
+    excludes:
+      - "**/*Screen.kt"
