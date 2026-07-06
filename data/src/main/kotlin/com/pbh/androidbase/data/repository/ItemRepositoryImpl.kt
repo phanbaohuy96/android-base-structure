@@ -13,22 +13,20 @@ import com.pbh.androidbase.domain.entity.Item
 import com.pbh.androidbase.domain.model.AppResult
 import com.pbh.androidbase.domain.model.DomainError
 import com.pbh.androidbase.domain.repository.ItemRepository
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
 /** Offline-first implementation of [ItemRepository] backed by Room and a remote source. */
 class ItemRepositoryImpl
-    @Inject
     constructor(
-        @param:ApplicationContext private val context: Context,
+        private val context: Context,
         private val itemDao: ItemDao,
         private val remoteDataSource: ItemRemoteDataSource,
         private val dispatcherProvider: DispatcherProvider,
+        private val useSeedFallback: Boolean,
     ) : ItemRepository {
         /** Observes cached items and maps them to domain entities on the IO dispatcher. */
         override fun observeItems(): Flow<List<Item>> =
@@ -47,8 +45,12 @@ class ItemRepositoryImpl
                             remoteDataSource.getItems()
                         } catch (cancellationException: CancellationException) {
                             throw cancellationException
-                        } catch (_: Exception) {
-                            seedItems()
+                        } catch (exception: Exception) {
+                            if (useSeedFallback) {
+                                seedItems()
+                            } else {
+                                throw exception
+                            }
                         }
                     itemDao.upsertAll(remoteItems.map { it.toEntity() })
                     AppResult.Success(Unit)

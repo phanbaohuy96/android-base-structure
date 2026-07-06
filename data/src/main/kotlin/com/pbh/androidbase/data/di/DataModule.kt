@@ -13,6 +13,7 @@ import com.pbh.androidbase.data.local.datastore.SessionStore
 import com.pbh.androidbase.data.remote.api.AuthApi
 import com.pbh.androidbase.data.remote.api.ItemApi
 import com.pbh.androidbase.data.remote.source.AuthRemoteDataSource
+import com.pbh.androidbase.data.remote.source.ItemRemoteDataSource
 import com.pbh.androidbase.data.remote.source.MockAuthRemoteDataSource
 import com.pbh.androidbase.data.remote.source.RealAuthRemoteDataSource
 import com.pbh.androidbase.data.repository.AuthRepositoryImpl
@@ -38,10 +39,6 @@ abstract class RepositoryModule {
     /** Binds the auth repository port to the data implementation. */
     @Binds
     abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
-
-    /** Binds the item repository port to the data implementation. */
-    @Binds
-    abstract fun bindItemRepository(impl: ItemRepositoryImpl): ItemRepository
 }
 
 /** Hilt providers for data-layer infrastructure and remote source selection. */
@@ -124,4 +121,21 @@ object DataModule {
     /** Provides the item DAO from [AppDatabase]. */
     @Provides
     fun provideItemDao(database: AppDatabase): ItemDao = database.itemDao()
+
+    /** Provides the item repository with seed fallback limited to mock builds. */
+    @Provides
+    @Singleton
+    fun provideItemRepository(
+        @ApplicationContext context: Context,
+        itemDao: ItemDao,
+        remoteDataSource: ItemRemoteDataSource,
+        dispatcherProvider: DispatcherProvider,
+    ): ItemRepository =
+        ItemRepositoryImpl(
+            context = context,
+            itemDao = itemDao,
+            remoteDataSource = remoteDataSource,
+            dispatcherProvider = dispatcherProvider,
+            useSeedFallback = BuildConfig.USE_MOCK,
+        )
 }

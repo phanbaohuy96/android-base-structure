@@ -3,6 +3,7 @@ package com.pbh.androidbase.feature.home.ui.list
 import com.pbh.androidbase.core.ui.BaseViewModel
 import com.pbh.androidbase.core.ui.toUiText
 import com.pbh.androidbase.domain.model.AppResult
+import com.pbh.androidbase.domain.model.DomainError
 import com.pbh.androidbase.domain.usecase.GetItemsUseCase
 import com.pbh.androidbase.domain.usecase.LogoutUseCase
 import com.pbh.androidbase.domain.usecase.RefreshItemsUseCase
@@ -33,7 +34,13 @@ class HomeViewModel
                 setState { if (this is HomeListUiState.Content) copy(refreshing = true) else this }
                 when (val result = refreshItemsUseCase()) {
                     is AppResult.Success -> Unit
-                    is AppResult.Failure -> sendEffect(HomeListEffect.ShowMessage(result.error.toUiText()))
+                    is AppResult.Failure ->
+                        if (result.error == DomainError.Unauthorized) {
+                            logoutUseCase()
+                            sendEffect(HomeListEffect.LoggedOut)
+                        } else {
+                            sendEffect(HomeListEffect.ShowMessage(result.error.toUiText()))
+                        }
                 }
                 setState { if (this is HomeListUiState.Content) copy(refreshing = false) else this }
             }

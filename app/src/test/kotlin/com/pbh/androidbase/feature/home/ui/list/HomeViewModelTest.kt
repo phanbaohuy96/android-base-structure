@@ -76,6 +76,22 @@ class HomeViewModelTest {
         }
 
     @Test
+    fun `unauthorized refresh clears session and emits logged out effect`() =
+        runTest(dispatcher) {
+            val repository = FakeItemRepository(refreshResult = AppResult.Failure(DomainError.Unauthorized))
+            val authRepository = FakeAuthRepository()
+            val viewModel = createViewModel(itemRepository = repository, authRepository = authRepository)
+
+            viewModel.effects.test {
+                advanceUntilIdle()
+
+                assertEquals(HomeListEffect.LoggedOut, awaitItem())
+                assertEquals(1, authRepository.logoutCalls)
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+
+    @Test
     fun `logout emits logged out effect`() =
         runTest(dispatcher) {
             val authRepository = FakeAuthRepository()

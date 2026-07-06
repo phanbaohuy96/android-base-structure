@@ -78,14 +78,14 @@ interfaces.
 - Authentication: login form, `LoginUseCase`, mock/real auth source selection,
   `SessionStore`, and session-driven navigation.
 - Home: offline-first list/detail flow using Room as the local source of truth,
-  remote refresh, seed fallback, and typed not-found errors.
+  remote refresh, dev-only seed fallback, and typed not-found errors.
 
 Feature walkthroughs with Mermaid diagrams live in
 [`docs/features/`](docs/features/README.md).
 
 ## Flavors And Environment
 
-- `dev`: mock auth, local HTTP allowed for emulator hostnames.
+- `dev`: mock auth, seed fallback, local HTTP allowed for emulator hostnames.
 - `staging`: real API URL placeholder, cleartext disabled.
 - `prod`: real API URL placeholder, cleartext disabled.
 
@@ -180,6 +180,7 @@ CI runs on pushes to `main` and pull requests:
 ./gradlew :app:assembleDevDebug
 ./gradlew testDevDebugUnitTest
 ./gradlew detekt spotlessCheck
+./gradlew :app:koverVerifyDevDebug :data:koverVerifyDevDebug :core:koverVerifyDebug :domain:koverVerify
 ```
 
 ## Clone And Rename

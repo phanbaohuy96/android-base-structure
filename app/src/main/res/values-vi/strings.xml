@@ -7,8 +7,8 @@
     <string name="login_email_label">Email</string>
     <string name="login_password_label">Mật khẩu</string>
     <string name="login_sign_in">Đăng nhập</string>
-    <string name="login_default_email">demo@example.com</string>
-    <string name="login_default_password">password</string>
+    <string name="login_default_email"></string>
+    <string name="login_default_password"></string>
 
     <!-- Home / item detail -->
     <string name="home_title">Trang chủ</string>

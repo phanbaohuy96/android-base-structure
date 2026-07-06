@@ -49,12 +49,12 @@ abstract class BaseViewModel<S, E : UiEffect>(
     /**
      * Runs [block] on [viewModelScope]. Rethrows [CancellationException] so structured
      * concurrency keeps working; any other throwable is normalized via [NetworkErrorMapper] and
-     * handed to [onError] (default: swallow — callers that already return [DomainError] from a
-     * use case handle failures inline and leave [onError] empty).
+     * handed to [onError]. The default fails loud so unexpected bugs are not silently swallowed;
+     * callers that expect thrown infrastructure failures should pass an explicit handler.
      */
     @Suppress("TooGenericExceptionCaught")
     protected fun launch(
-        onError: (DomainError) -> Unit = {},
+        onError: (DomainError) -> Unit = { error("Unhandled ViewModel failure: $it") },
         block: suspend CoroutineScope.() -> Unit,
     ): Job =
         viewModelScope.launch {

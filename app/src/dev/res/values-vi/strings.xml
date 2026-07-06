@@ -1,0 +1,4 @@
+<resources>
+    <string name="login_default_email">demo@example.com</string>
+    <string name="login_default_password">password</string>
+</resources>
