@@ -13,3 +13,4 @@ google-services.json
 .env.*
 !.env.example
 node_modules/
+.gstack/
