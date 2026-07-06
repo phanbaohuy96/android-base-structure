@@ -9,6 +9,7 @@ import com.pbh.androidbase.feature.home.navigation.HomeDetailRoute
 import com.pbh.androidbase.feature.home.navigation.HomeListRoute
 import com.pbh.androidbase.feature.home.navigation.homeGraph
 
+/** Root navigation host that switches auth/home start destination from [StartRoute]. */
 @Composable
 fun AppNavHost(startRoute: StartRoute) {
     val navController = rememberNavController()

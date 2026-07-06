@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.VisualTransformation
 
+/** Outlined text field wrapper that keeps feature forms on the shared design system path. */
 @Composable
 fun AppTextField(
     value: String,

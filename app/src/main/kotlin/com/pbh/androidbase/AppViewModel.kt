@@ -23,6 +23,7 @@ class AppViewModel
     constructor(
         observeSession: ObserveSessionUseCase,
     ) : ViewModel() {
+        /** Null until the session guard resolves, then the top-level destination to show. */
         val startRoute: StateFlow<StartRoute?> =
             observeSession()
                 .map { session -> if (session != null) StartRoute.Home else StartRoute.Login }

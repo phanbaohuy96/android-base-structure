@@ -23,6 +23,8 @@ Layer rules:
 - Feature packages never import `com.pbh.androidbase.data.*`.
 - `:data` implements repository ports from `:domain`.
 - `:app` is the composition root and owns feature navigation plus app-level wiring.
+- Feature docs live in `docs/features/`; new features should add
+  `docs/features/<name>.md` with a Mermaid workflow.
 
 ## Architecture
 

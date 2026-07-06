@@ -9,6 +9,7 @@ import com.pbh.androidbase.domain.usecase.RefreshItemsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+/** ViewModel for the offline-first home list and logout action. */
 @HiltViewModel
 class HomeViewModel
     @Inject
@@ -26,6 +27,7 @@ class HomeViewModel
             refresh()
         }
 
+        /** Refreshes items while preserving currently displayed cached content. */
         fun refresh() {
             launch {
                 setState { if (this is HomeListUiState.Content) copy(refreshing = true) else this }
@@ -37,6 +39,7 @@ class HomeViewModel
             }
         }
 
+        /** Clears the current session and emits navigation back to login. */
         fun logout() {
             launch {
                 logoutUseCase()

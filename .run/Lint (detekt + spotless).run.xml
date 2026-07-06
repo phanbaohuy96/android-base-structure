@@ -1,0 +1,13 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Lint (detekt + spotless)" type="GradleRunConfiguration" factoryName="Gradle">
+    <ExternalSystemSettings>
+      <option name="externalProjectPath" value="$PROJECT_DIR$" />
+      <option name="taskNames">
+        <list>
+          <option value="detekt" />
+          <option value="spotlessCheck" />
+        </list>
+      </option>
+    </ExternalSystemSettings>
+  </configuration>
+</component>

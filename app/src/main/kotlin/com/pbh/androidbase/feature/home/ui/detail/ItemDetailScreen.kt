@@ -16,6 +16,7 @@ import com.pbh.androidbase.R
 import com.pbh.androidbase.core.designsystem.AppTheme
 import com.pbh.androidbase.core.ui.BaseScreen
 
+/** Item detail screen that loads and renders one cached item by [itemId]. */
 @Composable
 fun ItemDetailScreen(
     itemId: String,

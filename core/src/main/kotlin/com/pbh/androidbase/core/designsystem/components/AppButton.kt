@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.pbh.androidbase.core.designsystem.AppTheme
 
+/** Primary action button with the app minimum touch target and optional loading state. */
 @Composable
 fun AppButton(
     text: String,
@@ -38,6 +39,7 @@ fun AppButton(
     }
 }
 
+/** Text button variant using the app minimum touch target. */
 @Composable
 fun AppTextButton(
     text: String,

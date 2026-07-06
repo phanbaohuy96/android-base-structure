@@ -8,9 +8,11 @@ import com.pbh.androidbase.domain.repository.AuthRepository
 
 private const val MIN_PASSWORD_LENGTH = 6
 
+/** Validates credentials and delegates authentication to [AuthRepository]. */
 class LoginUseCase(
     private val authRepository: AuthRepository,
 ) {
+    /** Returns a session on success or a typed validation/authentication failure. */
     suspend operator fun invoke(
         email: String,
         password: String,

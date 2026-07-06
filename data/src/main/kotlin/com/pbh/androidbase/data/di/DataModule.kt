@@ -31,23 +31,29 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
+/** Hilt bindings for repository interfaces implemented by the data module. */
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
+    /** Binds the auth repository port to the data implementation. */
     @Binds
     abstract fun bindAuthRepository(impl: AuthRepositoryImpl): AuthRepository
 
+    /** Binds the item repository port to the data implementation. */
     @Binds
     abstract fun bindItemRepository(impl: ItemRepositoryImpl): ItemRepository
 }
 
+/** Hilt providers for data-layer infrastructure and remote source selection. */
 @Module
 @InstallIn(SingletonComponent::class)
 object DataModule {
+    /** Provides coroutine dispatchers used by repositories. */
     @Provides
     @Singleton
     fun provideDispatcherProvider(): DispatcherProvider = DefaultDispatcherProvider()
 
+    /** Provides JSON configured to tolerate unknown API fields. */
     @Provides
     @Singleton
     fun provideJson(): Json =
@@ -55,6 +61,7 @@ object DataModule {
             ignoreUnknownKeys = true
         }
 
+    /** Provides the OkHttp client with auth and environment-aware logging interceptors. */
     @Provides
     @Singleton
     fun provideOkHttpClient(sessionStore: SessionStore): OkHttpClient =
@@ -72,6 +79,7 @@ object DataModule {
                 },
             ).build()
 
+    /** Provides Retrofit configured with the flavor-specific base URL. */
     @Provides
     @Singleton
     fun provideRetrofit(
@@ -84,12 +92,15 @@ object DataModule {
             json = json,
         )
 
+    /** Creates the auth Retrofit API. */
     @Provides
     fun provideAuthApi(retrofit: Retrofit): AuthApi = retrofit.create(AuthApi::class.java)
 
+    /** Creates the item Retrofit API. */
     @Provides
     fun provideItemApi(retrofit: Retrofit): ItemApi = retrofit.create(ItemApi::class.java)
 
+    /** Selects mock or real auth according to `BuildConfig.USE_MOCK`. */
     @Provides
     @Singleton
     fun provideAuthRemoteDataSource(authApi: AuthApi): AuthRemoteDataSource =
@@ -99,6 +110,7 @@ object DataModule {
             RealAuthRemoteDataSource(authApi)
         }
 
+    /** Opens the Room database that owns local app caches. */
     @Provides
     @Singleton
     fun provideDatabase(
@@ -109,6 +121,7 @@ object DataModule {
             .fallbackToDestructiveMigration(false)
             .build()
 
+    /** Provides the item DAO from [AppDatabase]. */
     @Provides
     fun provideItemDao(database: AppDatabase): ItemDao = database.itemDao()
 }

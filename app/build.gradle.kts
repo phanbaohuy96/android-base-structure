@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -8,14 +6,6 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
-
-val keystorePropertiesFile = rootProject.file("keystore.properties")
-val keystoreProperties =
-    Properties().apply {
-        if (keystorePropertiesFile.exists()) {
-            keystorePropertiesFile.inputStream().use(::load)
-        }
-    }
 
 android {
     namespace = "com.pbh.androidbase"
@@ -28,17 +18,6 @@ android {
         versionCode = 1
         versionName = "0.1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    signingConfigs {
-        create("release") {
-            if (keystoreProperties.isNotEmpty()) {
-                storeFile = file(keystoreProperties["storeFile"] as String)
-                storePassword = keystoreProperties["storePassword"] as String
-                keyAlias = keystoreProperties["keyAlias"] as String
-                keyPassword = keystoreProperties["keyPassword"] as String
-            }
-        }
     }
 
     // Base URL and mock toggle live in :data (the single owner of network config); see
@@ -70,9 +49,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
-            if (keystoreProperties.isNotEmpty()) {
-                signingConfig = signingConfigs.getByName("release")
-            }
         }
     }
 
@@ -127,3 +103,5 @@ dependencies {
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit4)
 }
+
+apply(from = rootProject.file("gradle/signing.gradle.kts"))

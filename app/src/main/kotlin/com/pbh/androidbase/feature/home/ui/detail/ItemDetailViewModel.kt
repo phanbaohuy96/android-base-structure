@@ -7,12 +7,14 @@ import com.pbh.androidbase.domain.usecase.GetItemDetailUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+/** ViewModel that loads one item for the detail screen. */
 @HiltViewModel
 class ItemDetailViewModel
     @Inject
     constructor(
         private val getItemDetailUseCase: GetItemDetailUseCase,
     ) : BaseViewModel<ItemDetailUiState, Nothing>(ItemDetailUiState.Loading) {
+        /** Loads the item matching [itemId] and maps failures to UI text. */
         fun load(itemId: String) {
             launch {
                 val result = getItemDetailUseCase(itemId)

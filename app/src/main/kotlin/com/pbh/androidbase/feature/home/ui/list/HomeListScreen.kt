@@ -25,6 +25,7 @@ import com.pbh.androidbase.core.designsystem.components.AppTextButton
 import com.pbh.androidbase.core.ui.BaseScreen
 import com.pbh.androidbase.domain.entity.Item
 
+/** Home list screen that renders cached items and exposes refresh, logout, and detail actions. */
 @Composable
 fun HomeListScreen(
     onLogout: () -> Unit,

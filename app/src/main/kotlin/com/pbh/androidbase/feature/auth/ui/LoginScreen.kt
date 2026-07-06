@@ -26,6 +26,7 @@ import com.pbh.androidbase.core.designsystem.components.AppButton
 import com.pbh.androidbase.core.designsystem.components.AppTextField
 import com.pbh.androidbase.core.ui.BaseScreen
 
+/** Login form screen that renders auth state and delegates sign-in events to [LoginViewModel]. */
 @Composable
 fun LoginScreen(
     onLoginComplete: () -> Unit,

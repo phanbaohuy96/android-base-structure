@@ -2,6 +2,7 @@ package com.pbh.androidbase.data.remote.dto
 
 import kotlinx.serialization.Serializable
 
+/** Network representation of a home item. */
 @Serializable
 data class ItemDto(
     val id: String,

@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+/** Complete theme configuration injected into [AndroidBaseTheme]. */
 @Immutable
 data class AppThemeConfig(
     val colorScheme: ColorScheme,
@@ -28,6 +29,7 @@ data class AppThemeConfig(
     val decoration: AppDecoration,
 )
 
+/** Shared spacing scale for screens and reusable components. */
 @Immutable
 data class AppSpacing(
     val extraSmall: Dp = 4.dp,
@@ -38,6 +40,7 @@ data class AppSpacing(
     val screen: Dp = 24.dp,
 )
 
+/** Shared non-color decoration tokens used by app components. */
 @Immutable
 data class AppDecoration(
     val minTouchTarget: Dp = 48.dp,
@@ -54,39 +57,48 @@ private val LocalAppThemeConfig =
         AppThemeDefaults.light()
     }
 
+/** Composition-local accessors for the active app theme tokens. */
 object AppTheme {
+    /** Current Material color scheme. */
     val colors: ColorScheme
         @Composable
         @ReadOnlyComposable
         get() = MaterialTheme.colorScheme
 
+    /** Current Material typography scale. */
     val typography: Typography
         @Composable
         @ReadOnlyComposable
         get() = MaterialTheme.typography
 
+    /** Current Material shapes. */
     val shapes: Shapes
         @Composable
         @ReadOnlyComposable
         get() = MaterialTheme.shapes
 
+    /** Current app spacing scale. */
     val spacing: AppSpacing
         @Composable
         @ReadOnlyComposable
         get() = LocalAppSpacing.current
 
+    /** Current app decoration tokens. */
     val decoration: AppDecoration
         @Composable
         @ReadOnlyComposable
         get() = LocalAppDecoration.current
 
+    /** Full theme configuration currently provided to the tree. */
     val config: AppThemeConfig
         @Composable
         @ReadOnlyComposable
         get() = LocalAppThemeConfig.current
 }
 
+/** Default light and dark theme configurations for the starter app. */
 object AppThemeDefaults {
+    /** Returns the default light theme configuration. */
     fun light(): AppThemeConfig =
         AppThemeConfig(
             colorScheme =
@@ -113,6 +125,7 @@ object AppThemeDefaults {
             decoration = AppDecoration(),
         )
 
+    /** Returns the default dark theme configuration. */
     fun dark(): AppThemeConfig =
         AppThemeConfig(
             colorScheme =
@@ -179,6 +192,7 @@ private fun appTypography(): Typography =
             ),
     )
 
+/** Provides [config] to Compose and applies the matching Material theme. */
 @Composable
 fun AndroidBaseTheme(
     config: AppThemeConfig = AppThemeDefaults.light(),

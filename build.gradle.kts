@@ -21,6 +21,13 @@ plugins {
 
 val kotlinVersion = libs.versions.kotlin.get()
 
+extensions.configure<SpotlessExtension>("spotless") {
+    kotlinGradle {
+        target("*.gradle.kts", "gradle/*.gradle.kts")
+        ktlint(libs.versions.ktlint.get())
+    }
+}
+
 subprojects {
     apply(plugin = "com.diffplug.spotless")
     apply(plugin = "io.gitlab.arturbosch.detekt")

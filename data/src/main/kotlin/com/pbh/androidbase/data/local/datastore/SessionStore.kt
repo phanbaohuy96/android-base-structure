@@ -15,6 +15,7 @@ import javax.inject.Singleton
 
 private val Context.sessionDataStore by preferencesDataStore(name = "session")
 
+/** Persists session identity in DataStore and the auth token in encrypted storage. */
 @Singleton
 class SessionStore
     @Inject
@@ -41,6 +42,7 @@ class SessionStore
             )
         }
 
+        /** Observes the reconstructed session, or null when any session part is missing. */
         fun observeSession(): Flow<UserSession?> =
             context.sessionDataStore.data.map { preferences ->
                 val userId = preferences[userIdKey]
@@ -53,8 +55,10 @@ class SessionStore
                 }
             }
 
+        /** Returns the current token synchronously for request interception. */
         fun currentToken(): String? = encryptedPreferences.getString(tokenKey, null)
 
+        /** Saves identity data and token for the authenticated [session]. */
         suspend fun save(session: UserSession) {
             encryptedPreferences.edit().putString(tokenKey, session.token).apply()
             context.sessionDataStore.edit { preferences ->
@@ -63,6 +67,7 @@ class SessionStore
             }
         }
 
+        /** Clears all persisted session state. */
         suspend fun clear() {
             encryptedPreferences.edit().clear().apply()
             context.sessionDataStore.edit { it.clear() }

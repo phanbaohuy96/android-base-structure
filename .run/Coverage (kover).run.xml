@@ -1,0 +1,15 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Coverage (kover)" type="GradleRunConfiguration" factoryName="Gradle">
+    <ExternalSystemSettings>
+      <option name="externalProjectPath" value="$PROJECT_DIR$" />
+      <option name="taskNames">
+        <list>
+          <option value=":app:koverVerifyDevDebug" />
+          <option value=":data:koverVerifyDevDebug" />
+          <option value=":core:koverVerifyDebug" />
+          <option value=":domain:koverVerify" />
+        </list>
+      </option>
+    </ExternalSystemSettings>
+  </configuration>
+</component>

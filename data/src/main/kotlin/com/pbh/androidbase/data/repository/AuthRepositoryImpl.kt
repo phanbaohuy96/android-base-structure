@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+/** Data implementation of [AuthRepository] using a remote source plus [SessionStore]. */
 class AuthRepositoryImpl
     @Inject
     constructor(
@@ -20,8 +21,10 @@ class AuthRepositoryImpl
         private val sessionStore: SessionStore,
         private val dispatcherProvider: DispatcherProvider,
     ) : AuthRepository {
+        /** Observes the current persisted session. */
         override fun observeSession(): Flow<UserSession?> = sessionStore.observeSession()
 
+        /** Authenticates remotely, persists the session, and maps failures to domain errors. */
         @Suppress("TooGenericExceptionCaught")
         override suspend fun login(
             email: String,
@@ -39,6 +42,7 @@ class AuthRepositoryImpl
                 }
             }
 
+        /** Clears all persisted session state. */
         override suspend fun logout() =
             withContext(dispatcherProvider.io) {
                 sessionStore.clear()

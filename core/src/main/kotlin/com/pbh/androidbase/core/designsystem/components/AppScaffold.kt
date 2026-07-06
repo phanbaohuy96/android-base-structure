@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.pbh.androidbase.core.designsystem.AppTheme
 
+/** App-level scaffold wrapper with optional top bar, actions, snackbar host, and content padding. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppScaffold(

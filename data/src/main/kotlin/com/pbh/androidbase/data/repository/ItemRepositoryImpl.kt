@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+/** Offline-first implementation of [ItemRepository] backed by Room and a remote source. */
 class ItemRepositoryImpl
     @Inject
     constructor(
@@ -29,12 +30,14 @@ class ItemRepositoryImpl
         private val remoteDataSource: ItemRemoteDataSource,
         private val dispatcherProvider: DispatcherProvider,
     ) : ItemRepository {
+        /** Observes cached items and maps them to domain entities on the IO dispatcher. */
         override fun observeItems(): Flow<List<Item>> =
             itemDao
                 .observeItems()
                 .map { entities -> entities.map { it.toDomain() } }
                 .flowOn(dispatcherProvider.io)
 
+        /** Refreshes Room from remote data, using localized seed items when remote fetch fails. */
         @Suppress("TooGenericExceptionCaught")
         override suspend fun refreshItems(): AppResult<Unit> =
             withContext(dispatcherProvider.io) {
@@ -56,6 +59,7 @@ class ItemRepositoryImpl
                 }
             }
 
+        /** Reads a cached item by [id], returning [DomainError.NotFound] when absent. */
         override suspend fun getItem(id: String): AppResult<Item> =
             withContext(dispatcherProvider.io) {
                 val entity = itemDao.getItem(id) ?: return@withContext AppResult.Failure(DomainError.NotFound)

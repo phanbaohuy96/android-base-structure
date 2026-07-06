@@ -4,11 +4,13 @@ import com.pbh.androidbase.domain.model.DomainError
 import retrofit2.HttpException
 import java.io.IOException
 
+/** Maps infrastructure exceptions into stable domain error categories. */
 object NetworkErrorMapper {
     private const val HTTP_UNAUTHORIZED = 401
     private const val HTTP_FORBIDDEN = 403
     private const val HTTP_NOT_FOUND = 404
 
+    /** Converts [throwable] into a [DomainError] suitable for domain/UI boundaries. */
     fun map(throwable: Throwable): DomainError =
         when (throwable) {
             is HttpException ->

@@ -34,6 +34,16 @@ Override base URL in CI or local builds with:
 ./gradlew :app:assembleDevDebug -PANDROID_BASE_URL=https://example.test/
 ```
 
+Copy `.env.example` to `.env` when you want a local file for `ANDROID_BASE_URL`;
+export it before running Gradle because the build reads environment variables and
+Gradle properties, not `.env` files directly.
+
+## Documentation
+
+- [Feature docs](docs/features/README.md) describe authentication, home, state, and workflows.
+- [Agent docs](docs/agents/domain.md) describe domain-layer conventions for agents.
+- [Run configs](.run/README.md) explain the shared Android Studio Gradle configurations.
+
 ## Common Tasks
 
 ```bash
@@ -41,7 +51,7 @@ Override base URL in CI or local builds with:
 ./gradlew testDevDebugUnitTest
 ./gradlew detekt spotlessCheck
 ./gradlew spotlessApply
-./gradlew koverVerify
+./gradlew :app:koverVerifyDevDebug :data:koverVerifyDevDebug :core:koverVerifyDebug :domain:koverVerify
 ```
 
 The thin `Makefile` wraps these commands for convenience.
@@ -76,7 +86,7 @@ Feature ViewModels extend `BaseViewModel<S, E>` from `:core` and expose sealed U
 
 ## Test Coverage
 
-Kover is configured at the root with an 80% line coverage gate for app logic that is practical to test on the JVM: domain models/use cases, error mapping, `UiText`, ViewModels, UiState, and one-off effects. Compose rendering can be covered with UI tests when screen semantics need direct verification.
+Kover is configured with an 80% line coverage gate for app logic that is practical to test on the JVM: domain models/use cases, error mapping, `UiText`, ViewModels, UiState, and one-off effects. Use the dev-debug/module coverage command from Common Tasks; aggregate `koverVerify` measures every Android variant and is not the template's coverage gate.
 
 ## Agent Guidance
 

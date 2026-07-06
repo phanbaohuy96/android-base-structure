@@ -6,7 +6,9 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
+/** Factory for Retrofit instances that share the app's Kotlin serialization setup. */
 object RetrofitFactory {
+    /** Creates a Retrofit client for [baseUrl] using [client] and [json]. */
     fun create(
         baseUrl: String,
         client: OkHttpClient,

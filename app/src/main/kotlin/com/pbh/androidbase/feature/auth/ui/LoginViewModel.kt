@@ -7,12 +7,14 @@ import com.pbh.androidbase.domain.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+/** ViewModel for credential submission and login result state. */
 @HiltViewModel
 class LoginViewModel
     @Inject
     constructor(
         private val loginUseCase: LoginUseCase,
     ) : BaseViewModel<LoginUiState, LoginEffect>(LoginUiState.Idle) {
+        /** Validates and submits [email] and [password], ignoring duplicate loading taps. */
         fun login(
             email: String,
             password: String,

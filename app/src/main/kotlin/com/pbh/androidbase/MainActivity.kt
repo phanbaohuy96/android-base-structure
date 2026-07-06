@@ -18,8 +18,10 @@ import com.pbh.androidbase.core.designsystem.AppThemeDefaults
 import com.pbh.androidbase.navigation.AppNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
+/** Main launcher activity that applies theme selection and hosts app navigation. */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    /** Creates the Compose content tree and waits for the session guard start route. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
