@@ -3,6 +3,7 @@ package com.pbh.androidbase
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +25,7 @@ class MainActivity : ComponentActivity() {
     /** Creates the Compose content tree and waits for the session guard start route. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
             val themeConfig =
                 if (isSystemInDarkTheme()) {
