@@ -17,3 +17,5 @@ rtk bash .agents/scripts/update-android-skills.sh
 ```
 
 Use `ANDROID_SKILLS_REF=<ref>` to pin a release or commit. The updater skips upstream `testing-setup`, `navigation-3`, and `styles` because their useful guidance is merged into `and-testing`, `and-navigation`, and `and-theme-usage`.
+Repo-specific patches for upstream skills live under `.agents/skill-overlays/`
+and are reapplied by the updater after each refresh.
