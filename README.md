@@ -6,6 +6,21 @@ Navigation Compose, and coding-agent project guidance.
 
 Base package: `com.pbh.androidbase`.
 
+## Contents
+
+- [Quickstart](#quickstart)
+- [Tech Stack](#tech-stack)
+- [Architecture](#architecture)
+- [Source Structure](#source-structure)
+- [Reference Features](#reference-features)
+- [Configuration](#configuration)
+- [Theming](#theming)
+- [Localization](#localization)
+- [Testing And Coverage](#testing-and-coverage)
+- [Common Tasks](#common-tasks)
+- [Clone And Rename](#clone-and-rename)
+- [Documentation And Agent Guidance](#documentation-and-agent-guidance)
+
 ## Quickstart
 
 ```bash
@@ -19,7 +34,7 @@ Android Studio also discovers shared Gradle run configurations from `.run/`.
 Generate an Android App launch configuration locally for `devDebug` when you want
 one-click deployment from the IDE.
 
-## Stack
+## Tech Stack
 
 | Area | Choice |
 |---|---|
@@ -35,7 +50,27 @@ one-click deployment from the IDE.
 
 All versions live in `gradle/libs.versions.toml`.
 
-## Modules
+## Architecture
+
+### Module Graph
+
+Each module depends only on the modules it points to (arrow = "depends on").
+`:domain` sits at the center as pure Kotlin/JVM with no Android or framework code.
+
+```mermaid
+graph TD
+    app[":app — composition root · features · navigation"]
+    core[":core — design system · BaseViewModel · network"]
+    data[":data — Retrofit · Room · DataStore · repo impls"]
+    domain[":domain — entities · use cases · repository ports"]
+
+    app --> core
+    app --> data
+    app --> domain
+    data --> core
+    data --> domain
+    core --> domain
+```
 
 ```text
 :app -> :core, :data, :domain
@@ -49,13 +84,38 @@ Feature code lives inside `:app` under
 cases and shared `:core` UI, but must not import `com.pbh.androidbase.data.*`.
 Data implementations stay in `:data`. The app module composes everything.
 
-## Architecture
+### Data Flow
 
-The reference features follow the same vertical slice:
+The reference features follow the same vertical slice. Screens send events up and
+render immutable state; use cases orchestrate domain behavior; repository ports in
+`:domain` are implemented in `:data`.
 
-```text
-Screen -> ViewModel -> UseCase -> Repository port -> data implementation
+```mermaid
+flowchart LR
+    subgraph ui [":app + :core UI"]
+        Screen["Screen (BaseScreen)"]
+        VM["ViewModel (BaseViewModel)"]
+    end
+    subgraph dom [":domain"]
+        UC["UseCase"]
+        Port["Repository port"]
+    end
+    subgraph dat [":data"]
+        Impl["Repository impl"]
+        Remote["Retrofit API"]
+        Local["Room / DataStore"]
+    end
+
+    Screen -->|events| VM
+    VM -->|state + effects| Screen
+    VM -->|invoke| UC
+    UC --> Port
+    Port -. implemented by .-> Impl
+    Impl --> Remote
+    Impl --> Local
 ```
+
+### Layer Responsibilities
 
 - `:domain` owns entities, repository interfaces, use cases, `AppResult`, and
   `DomainError`.
@@ -73,6 +133,45 @@ lifecycle-aware state, observes effects, and automatically shows
 `MessageEffect` snackbars. UI states stay explicit and exhaustive with sealed
 interfaces.
 
+## Source Structure
+
+Modules in dependency order (`:domain` → `:core` → `:data` → `:app`). Each
+module's Kotlin lives under `src/main/kotlin/com/pbh/androidbase/`; test sources
+mirror these packages under `src/test/kotlin`.
+
+```text
+com.pbh.androidbase
+├── :domain
+│     ├── entity
+│     ├── model
+│     ├── repository
+│     └── usecase
+├── :core
+│     ├── common
+│     ├── designsystem
+│     ├── network
+│     └── ui
+├── :data
+│     ├── local
+│     ├── remote
+│     ├── mapper
+│     ├── repository
+│     └── di
+└── :app
+    ├── feature
+    │   ├── auth
+    │   └── home
+    ├── navigation
+    └── di
+```
+
+| Module | Packages | Key types |
+|---|---|---|
+| `:domain` | `entity`, `model`, `repository`, `usecase` | `Item`, `UserSession`, `AppResult`, `DomainError`, `LoginUseCase` |
+| `:core` | `common`, `designsystem`, `network`, `ui` | `BaseViewModel`, `BaseScreen`, `AppTheme`, `UiText`, `RetrofitFactory` |
+| `:data` | `local`, `remote`, `mapper`, `repository`, `di` | `AppDatabase`, `ItemDao`, `SessionStore`, `AuthApi`/`ItemApi`, repository impls |
+| `:app` | `feature/{auth,home}`, `navigation`, `di` | `MainActivity`, `AppNavHost`, `LoginViewModel`, `HomeViewModel` |
+
 ## Reference Features
 
 - Authentication: login form, `LoginUseCase`, mock/real auth source selection,
@@ -83,7 +182,9 @@ interfaces.
 Feature walkthroughs with Mermaid diagrams live in
 [`docs/features/`](docs/features/README.md).
 
-## Flavors And Environment
+## Configuration
+
+### Flavors And Environment
 
 - `dev`: mock auth, seed fallback, local HTTP allowed for emulator hostnames.
 - `staging`: real API URL placeholder, cleartext disabled.
@@ -105,7 +206,7 @@ set -a; source .env; set +a
 Gradle reads environment variables and `-P` properties; it does not auto-load
 `.env` files.
 
-## Signing
+### Signing
 
 Release signing is isolated in `gradle/signing.gradle.kts` and applied from
 `app/build.gradle.kts`. It is a no-op when `keystore.properties` is absent, so
@@ -115,23 +216,7 @@ For release builds, copy `keystore.properties.example` to `keystore.properties`
 and point `storeFile` at a local keystore. Never commit `keystore.properties`,
 `*.jks`, or `*.keystore`.
 
-## Common Tasks
-
-| Task | Command |
-|---|---|
-| Setup check | `./gradlew --version` |
-| Build dev debug | `./gradlew :app:assembleDevDebug` |
-| Install dev debug | `./gradlew :app:installDevDebug` |
-| Unit tests | `./gradlew testDevDebugUnitTest` |
-| Lint/format check | `./gradlew detekt spotlessCheck` |
-| Format | `./gradlew spotlessApply` |
-| Coverage gate | `./gradlew :app:koverVerifyDevDebug :data:koverVerifyDevDebug :core:koverVerifyDebug :domain:koverVerify` |
-| Layer boundary check | `.agents/skills/and-dependency-injection/scripts/check_layer_boundaries.py` |
-
-The thin `Makefile` wraps the same commands as `make setup`, `make build`,
-`make test`, `make lint`, `make coverage`, `make format`, and `make init`.
-
-## Theme Configuration
+## Theming
 
 The app UI is controlled from `:core` through `AndroidBaseTheme` and
 `AppThemeConfig`.
@@ -170,9 +255,9 @@ Kover is configured with an 80% line coverage gate for app logic that is
 practical to test on the JVM: domain models/use cases, error mapping, `UiText`,
 ViewModels, UI state, and one-off effects.
 
-Use the dev-debug/module coverage command from Common Tasks. The aggregate
-`koverVerify` task measures every Android variant and is not the template's
-coverage gate.
+Use the dev-debug/module coverage command from [Common Tasks](#common-tasks). The
+aggregate `koverVerify` task measures every Android variant and is not the
+template's coverage gate.
 
 CI runs on pushes to `main` and pull requests:
 
@@ -182,6 +267,22 @@ CI runs on pushes to `main` and pull requests:
 ./gradlew detekt spotlessCheck
 ./gradlew :app:koverVerifyDevDebug :data:koverVerifyDevDebug :core:koverVerifyDebug :domain:koverVerify
 ```
+
+## Common Tasks
+
+| Task | Command |
+|---|---|
+| Setup check | `./gradlew --version` |
+| Build dev debug | `./gradlew :app:assembleDevDebug` |
+| Install dev debug | `./gradlew :app:installDevDebug` |
+| Unit tests | `./gradlew testDevDebugUnitTest` |
+| Lint/format check | `./gradlew detekt spotlessCheck` |
+| Format | `./gradlew spotlessApply` |
+| Coverage gate | `./gradlew :app:koverVerifyDevDebug :data:koverVerifyDevDebug :core:koverVerifyDebug :domain:koverVerify` |
+| Layer boundary check | `.agents/skills/and-dependency-injection/scripts/check_layer_boundaries.py` |
+
+The thin `Makefile` wraps the same commands as `make setup`, `make build`,
+`make test`, `make lint`, `make coverage`, `make format`, and `make init`.
 
 ## Clone And Rename
 
@@ -194,7 +295,7 @@ Use the init script after cloning the template into a new app:
 The script rewrites the base package, app name text, and Kotlin package
 directories under `app`, `core`, `data`, and `domain`.
 
-## Documentation
+## Documentation And Agent Guidance
 
 - [Feature docs](docs/features/README.md) describe authentication, home, state,
   effects, workflows, and extension points.
@@ -204,8 +305,6 @@ directories under `app`, `core`, `data`, and `domain`.
   configurations.
 - `CONTEXT.md` defines the project vocabulary.
 - `.agents/INDEX.md` maps common tasks to project skills.
-
-## Agent Guidance
 
 Read `AGENTS.md`, `CONTEXT.md`, and `.agents/INDEX.md` before changing
 architecture, dependencies, generated code, or feature boundaries.
