@@ -22,6 +22,12 @@ import org.robolectric.annotation.Config
  * JVM Compose test for [LoginScreen] backed by Robolectric — CI-friendly, no emulator. The screen
  * is driven with an explicit [LoginViewModel] (real, over a fake repository) so no Hilt graph is
  * needed. Verifies the base-tier [com.pbh.androidbase.core.ui.BaseScreen] wiring renders the form.
+ *
+ * Lives in `src/testDebug` rather than `src/test` on purpose: `createComposeRule` launches
+ * `androidx.activity.ComponentActivity`, which is declared by the `ui-test-manifest` artifact, and
+ * that artifact is `debugImplementation` so its manifest entry merges into debug variants only.
+ * In `src/test` the test also runs under `testProdReleaseUnitTest`, where the activity is absent
+ * and Robolectric fails with "Unable to resolve activity for Intent".
  */
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [34])
